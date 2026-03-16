@@ -4,16 +4,29 @@ import bg from "../../assets/bg.jpg"
 import lgbg from "../../assets/lgbg.jpg"
 import { Button, Form, Input } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { login } from "../../api/users";
+import { setToken } from "../../store/login/authSlice";
+import { useDispatch } from "react-redux";
+import { replace, useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 function Login(){
 
     const [form]=Form.useForm();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const [loading,setLoading] = useState<boolean>(false)
 
     function checkValidLogin(){
-        form.validateFields().then((res)=>{
-
+        form.validateFields().then(async (res)=>{
+            setLoading(true);
+            const {data:{data:{token}}} = await login(res);
+            setLoading(false);
+            dispatch(setToken(token));
+            console.log(token);
+            navigate("/",{replace:true});
         }).catch((err)=>{
-
+            setLoading(false);
         })
     }
 
@@ -44,7 +57,7 @@ function Login(){
                         </Form.Item>
 
                         <Form.Item label={null}>
-                        <Button type="primary" style={{width:"100%"}} onClick={checkValidLogin}>
+                        <Button type="primary" style={{width:"100%"}} onClick={checkValidLogin} loading={loading}>
                             Login
                         </Button>
                         </Form.Item>

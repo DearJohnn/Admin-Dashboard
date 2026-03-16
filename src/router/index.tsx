@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import React from 'react';
+import RequireAccess from '../utils/RequireAccess';
 
 
 const Home = React.lazy(()=>import("../page/home"));
@@ -9,11 +10,11 @@ const NotFound = React.lazy(()=>import("../page/404"));
 const router = createBrowserRouter([
     {
         path:"/",
-        element: <Home/>
+        element: <RequireAccess allowed={true} redirectTo='/login'> <Home/> </RequireAccess>
     },
     {
         path:"/login",
-        element:<Login/>
+        element: <RequireAccess allowed={false} redirectTo='/'> <Login/></RequireAccess>
     },
     {
         path:"*",
