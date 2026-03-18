@@ -20,10 +20,10 @@ function Login(){
     function checkValidLogin(){
         form.validateFields().then(async (res)=>{
             setLoading(true);
-            const {data:{data:{token}}} = await login(res);
+            const {data:{data:{token,username}}} = await login(res);
             setLoading(false);
             dispatch(setToken(token));
-            console.log(token);
+            sessionStorage.setItem("username",username)
             navigate("/",{replace:true});
         }).catch((err)=>{
             setLoading(false);
