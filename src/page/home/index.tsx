@@ -4,6 +4,7 @@ import NavLeft from "../../components/navLeft";
 import MyBreadCrumb from "../../components/breadCrumb";
 import MyHeader from "../../components/header";
 import { useState } from "react";
+import { Outlet } from "react-router-dom";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -35,7 +36,7 @@ function Home(){
                 borderRadius: borderRadiusLG,
               }}
             >
-              Bill is a cat.
+              <Outlet></Outlet>
             </div>
           </Content>
           <Footer style={{ textAlign: 'center' }}>

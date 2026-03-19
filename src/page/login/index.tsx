@@ -7,7 +7,7 @@ import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { login } from "../../api/users";
 import { setToken } from "../../store/login/authSlice";
 import { useDispatch } from "react-redux";
-import { replace, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 function Login(){
