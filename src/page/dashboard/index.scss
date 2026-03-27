@@ -1,0 +1,36 @@
+.dashboard{
+    .cardData{
+        display: flex;
+        justify-content: space-between;
+        .dataNumber{
+            p{
+                color: #666666;
+                line-height: 32px;
+            }
+        }
+        .icon{
+            font-size: 60px;
+            color: #7da1f7;
+            
+        }
+    }
+    .progressData{
+        height: 400px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .parkingData{
+        height: 400px;
+        display: flex;
+        justify-content: space-between;
+        padding: 20px;
+    }
+    .parkingItemTag{
+        width: 40px;
+        text-align: center;
+        margin-right: 10px;
+    }
+    
+}
