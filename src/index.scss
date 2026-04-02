@@ -12,3 +12,19 @@ li{list-style: none;}
     display: block;
     clear: both;
 }
+.flex{
+    display: flex;
+    gap:10px;
+}
+.search{
+    .ant-col{
+        display: flex;
+        p{width: 140px}
+    }
+}
+.tr{
+    text-align: right;
+}
+.tc{
+    text-align: center;
+}

@@ -22,7 +22,7 @@ function RequireAccess({allowed,redirectTo,children}:RequireAccessProps){
         }
     },[allowed,isLogin,redirectTo])
 
-    return allowed === isLogin?<>{children}</>:<></>
+    return allowed == isLogin?<>{children}</>:<></>
 }
 
 export default RequireAccess

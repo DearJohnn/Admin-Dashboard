@@ -1,5 +1,5 @@
 import React from "react";
-import { Breadcrumb, Layout, theme } from 'antd';
+import { Layout, theme } from 'antd';
 import NavLeft from "../../components/navLeft";
 import MyBreadCrumb from "../../components/breadCrumb";
 import MyHeader from "../../components/header";
@@ -26,7 +26,7 @@ function Home(){
           <Header style={{ padding: "0 20px", background: colorBgContainer ,textAlign:"right"}} >
             <MyHeader/>
           </Header>
-          <Content style={{ margin: '0 16px' }}>
+          <Content style={{ margin: '0 16px' ,height:"09vh",overflowY:"auto",overflowX:"hidden"}}>
             <MyBreadCrumb/>
             <div
               style={{

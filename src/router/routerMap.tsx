@@ -11,7 +11,6 @@ const Overview = lazy(()=>import("../page/operation"));
 const Article = lazy(()=>import("../page/operation/articlePublishing"));
 const Comments = lazy(()=>import("../page/operation/comments"));
 const TenantList = lazy(()=>import("../page/tenant/index"));
-const AddTenant = lazy(()=>import("../page/tenant/addTenant"));
 const Building = lazy(()=>import("../page/property"));
 const Room = lazy(()=>import("../page/property/roomManagement"));
 const Vehicle = lazy(()=>import("../page/property/vehicleManagement"));
@@ -21,8 +20,7 @@ const Profile = lazy(()=>import("../page/profile"))
 
 export const routerMap:any={
     "/dashboard":<Dashboard/>,
-    "/users/list":<TenantList/>,
-    "/users/add":<AddTenant/>,
+    "/users":<TenantList/>,
     "/estate/tenement":<Building/>,
     "/estate/room":<Room/>,
     "/estate/car":<Vehicle/>,
