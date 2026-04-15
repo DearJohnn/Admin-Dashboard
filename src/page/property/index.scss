@@ -1,0 +1,14 @@
+.room{
+    .room-card{
+        margin-bottom: 10px;
+        h1{
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        p{font-weight: 500;}
+        .room-info{
+            display: flex;
+            justify-content: space-between;
+        }
+    }
+}

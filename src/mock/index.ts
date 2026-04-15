@@ -395,7 +395,7 @@ Mock.mock('https://www.demo.com/parkingData', "get", () => {
 })
 
 Mock.mock('https://www.demo.com/tenantList', "post", (options: any) => {
-    const {pageSize} = JSON.parse(options.body)
+    const { pageSize } = JSON.parse(options.body)
 
     return {
         code: 200,
@@ -417,32 +417,104 @@ Mock.mock('https://www.demo.com/tenantList', "post", (options: any) => {
                 }
 
             ],
-            total:78
+            total: 78
         })
     }
 })
 
-Mock.mock('https://www.demo.com/deleteTenant','post',(option:any)=>{
+Mock.mock('https://www.demo.com/deleteTenant', 'post', (options: any) => {
 
-    return{
-        code:200,
-        message:"success",
-        data:"Delete tenant success."
+    return {
+        code: 200,
+        message: "success",
+        data: "Delete tenant success."
     }
 })
 
-Mock.mock('https://www.demo.com/batchDeleteTenants','post',(option:any)=>{
-    return{
-        code:200,
-        message:"success",
-        data:"Delete selected tenants success"
+Mock.mock('https://www.demo.com/batchDeleteTenants', 'post', (options: any) => {
+    return {
+        code: 200,
+        message: "success",
+        data: "Delete selected tenants success"
     }
 })
 
-Mock.mock('https://www.demo.com/editTenant','post',(option:any)=>{
-    return{
-        code:200,
-        message:"success",
-        data:"Opretion Success"
+Mock.mock('https://www.demo.com/editTenant', 'post', (options: any) => {
+    return {
+        code: 200,
+        message: "success",
+        data: "Opretion Success"
+    }
+})
+
+Mock.mock('https://www.demo.com/buildingList', 'post', (options: any) => {
+    return {
+        code: 200,
+        message: "success",
+        data: Mock.mock({
+            [`list|8`]: [
+                {
+                    "key": "@string('number',6)",
+                    "buildingName": () => {
+                        const names = ['Liberty', 'Madison', 'Broadway', 'Lexington', 'Hudson']
+                        const suffix = ['Tower', 'Plaza', 'Center', 'Building']
+                        const number = Mock.Random.integer(1, 999)
+
+                        return `${number} ${Mock.Random.pick(names)} ${Mock.Random.pick(suffix)}`
+                    },
+                    "manager": "@name",
+                    "phone": () => {
+                        return `(${Mock.Random.integer(200, 999)}) ${Mock.Random.integer(200, 999)
+                            }-${Mock.Random.integer(1000, 9999)}`;
+                    },
+                    "status|1": ["1", "2", "3"],
+                    "vacancyRate": '@integer(0, 100)',
+                    "propertyFee": '@float(3, 5, 1, 1)%'
+                }
+            ],
+            total: 8
+        })
+    }
+})
+
+Mock.mock('https://www.demo.com/deleteBuilding', 'post', (options: any) => {
+    return {
+        code: 200,
+        message: "success",
+        data: "Delete Building Success"
+    }
+})
+
+Mock.mock('https://www.demo.com/editBuilding', 'post', (options: any) => {
+    return {
+        code: 200,
+        message: "success",
+        data: "Opretion Success"
+    }
+})
+
+function generateRooms() {
+    const rooms = [];
+    for (let i = 0; i < 50; i++) {
+        const floor = 1 + Math.floor(i / 6);
+        const roomNumber = floor * 100 + (101 + (i % 6));
+        rooms.push({
+            roomNumber,
+            decorationType: Mock.Random.pick(['Shell', 'Fully Furnished']),
+            area: Mock.Random.integer(70, 300),
+            unitPrice: Mock.Random.integer(1, 3),
+            src:"https://yuchens.neocities.org/roomPic.jpg"
+        })
+    }
+    return rooms
+}
+
+Mock.mock('https://www.demo.com/room', 'post', (options: any) => {
+    return {
+        code: 200,
+        message: 'success',
+        data: {
+            rooms: generateRooms()
+        }
     }
 })

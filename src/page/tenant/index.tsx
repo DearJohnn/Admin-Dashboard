@@ -105,7 +105,7 @@ function TenantList() {
             key: "operate",
             render(value, record, index) {
                 return <div className="flex">
-                    <Button type="primary" size="small" onClick={()=>editTenant(record)}>Edit</Button>
+                    <Button type="primary" onClick={()=>editTenant(record)}>Edit</Button>
                     <Popconfirm
                         title="Delete Confirmation"
                         description="Are you sure you want to delete this tenant?"
@@ -113,7 +113,7 @@ function TenantList() {
                         cancelText="Cancel"
                         onConfirm={()=>confirm(record.id)}
                     >
-                        <Button type="primary" danger size="small">Delete</Button>
+                        <Button type="primary" danger>Delete</Button>
                     </Popconfirm>
                 </div>
             },
@@ -154,6 +154,7 @@ function TenantList() {
         setLoading(false);
         setDataList(list);
         setTotal(total);
+        setSelectedRowKeys([]);
     },[])
 
     const reset = () => {

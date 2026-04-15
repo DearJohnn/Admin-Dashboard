@@ -16,10 +16,17 @@ li{list-style: none;}
     display: flex;
     gap:10px;
 }
+
 .search{
     .ant-col{
         display: flex;
-        p{width: 140px}
+        align-items: center;
+        p{
+            width: 160px;
+            text-align: right;
+            margin-right: 15px;
+            
+        }
     }
 }
 .tr{
