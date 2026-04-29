@@ -34,7 +34,7 @@ function MyHeader(){
         navigate("/personal")
       }else{
         dispatch(clearToken());
-        sessionStorage.removeItem("username")
+        sessionStorage.clear();
       }
     }
     return <div>

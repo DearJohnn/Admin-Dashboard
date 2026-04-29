@@ -1,5 +1,6 @@
 import { message } from "antd";
 import Mock from "mockjs"
+import { data } from "react-router-dom";
 
 Mock.setup({
     timeout: "200-600"
@@ -14,7 +15,8 @@ Mock.mock("https://www.demo.com/login", "post", (options: any) => {
             message: "login success",
             data: {
                 username: "admin2026",
-                token: "admin123456"
+                token: "admin123456",
+                btnAuth:["add","edit","delete"]
             }
         }
     } else if (username === "manager2026" && password === "manager123456") {
@@ -23,7 +25,8 @@ Mock.mock("https://www.demo.com/login", "post", (options: any) => {
             message: "login success",
             data: {
                 username: "manager2026",
-                token: "manager123456"
+                token: "manager123456",
+                btnAuth:["add","edit"]
             }
         }
     } else if (username == "user2026" && password === "user123456") {
@@ -32,7 +35,8 @@ Mock.mock("https://www.demo.com/login", "post", (options: any) => {
             message: "login success",
             data: {
                 username: "user2026",
-                token: "user123456"
+                token: "user123456",
+                btnAuth:["add"]
             }
         }
     } else {
@@ -296,6 +300,60 @@ const managerMenuList = [
     }
 ]
 
+const customizeMenuList = [
+    {
+        "icon": "DashboardOutlined",
+        "label": "工作台",
+        "key": "/dashboard",
+    },
+    {
+
+        "icon": "TeamOutlined",
+        "label": "租户管理",
+        "key": "/users",
+        "children": [
+            {
+                "icon": "UnorderedListOutlined",
+                "label": "租户列表",
+                "key": "/users/list",
+            },
+        ]
+    },
+    {
+        "icon": "LaptopOutlined",
+        "label": "物业管理",
+        "key": "/estate",
+        "children": [
+            {
+                "icon": "InsertRowLeftOutlined",
+                "label": "楼宇管理",
+                "key": "/estate/tenement",
+            },
+
+        ]
+    },
+    {
+        "icon": "ToolOutlined",
+        "label": "报修管理",
+        "key": "/repair"
+    },
+    {
+        "icon": "ToolOutlined",
+        "label": "设备管理",
+        "key": "/equipment",
+    },
+    {
+        "icon": "ThunderboltOutlined",
+        "label": "能源消耗",
+        "key": "/energy",
+    },
+    {
+        "icon": "UserOutlined",
+        "label": "个人中心",
+        "key": "/personal",
+    }
+]
+
 //menu
 Mock.mock('https://www.demo.com/menu', "get", (options: any) => {
     const token = sessionStorage.getItem("token");
@@ -503,7 +561,7 @@ function generateRooms() {
             decorationType: Mock.Random.pick(['Shell', 'Fully Furnished']),
             area: Mock.Random.integer(70, 300),
             unitPrice: Mock.Random.integer(1, 3),
-            src:"https://yuchens.neocities.org/roomPic.jpg"
+            src: "https://yuchens.neocities.org/roomPic.jpg"
         })
     }
     return rooms
@@ -515,6 +573,288 @@ Mock.mock('https://www.demo.com/room', 'post', (options: any) => {
         message: 'success',
         data: {
             rooms: generateRooms()
+        }
+    }
+})
+
+Mock.mock('https://www.demo.com/contractList', 'post', (options: any) => {
+    const { page, pageSize } = JSON.parse(options.body);
+
+    console.log("Contract API received params:", JSON.parse(options.body));
+
+    return {
+        code: 200,
+        message: "Success",
+        data: Mock.mock({
+            [`list|${pageSize}`]: [{
+                contractId: '@string("number", 8)',
+
+                contractType: '@pick(["Lease Agreement", "Custom Agreement", "Purchase Agreement"])',
+
+                contractName: '@pick(["Standard Residential Lease Agreement", "Parking Space Lease Agreement", "Commercial Property Purchase Agreement"])',
+
+                startDate: '@date("MM/dd/yyyy")',
+                endDate: '@date("MM/dd/yyyy")',
+
+                client: '@pick(["Evergreen Tech Inc.", "Blue Ocean LLC", "SixSix Media Inc."])',
+
+                serviceProvider: 'NexSpace LLC',
+
+                status: '@pick(["1", "2", "3"])',
+            }],
+            total: 54
+        })
+    }
+});
+
+Mock.mock('https://www.demo.com/billList', 'post', (options: any) => {
+    const { page = 1, pageSize = 10 } = JSON.parse(options.body || "{}");
+
+    console.log("Bill management API received params:", JSON.parse(options.body));
+
+    return {
+        code: 200,
+        message: "Success",
+        data: Mock.mock({
+            [`list|${pageSize}`]: [{
+                // Invoice ID
+                invoiceId: '@string("number", 8)',
+
+                // Payment Status: 1 = Paid, 2 = Outstanding
+                'status|1': ['1', '2'],
+
+                // US-style building + unit
+                roomNo: function () {
+                    return `${Mock.Random.integer(1, 999)} ${Mock.Random.pick(['Liberty', 'Madison', 'Broadway', 'Lexington', 'Hudson'])} ${Mock.Random.pick(['Tower', 'Plaza', 'Center', 'Building'])}, Unit ${Mock.Random.integer(100, 2000)}`
+                },
+
+                // Parking Space
+                'parkingNo|1': ['P-109', 'P-227', 'P-106', 'P-158'],
+
+                // US phone
+                phone: '(617) 555-0123',
+
+                // Property Management Fee (Annual)
+                'managementFee|1': [1278.0, 2633.0, 3698.0],
+
+                // Parking Fee (Monthly)
+                'parkingFee|1': ["$200", "$250", "$300"],
+
+                // Rent (Yearly)
+                'rent|1': ["$25,800", "$19,800"],
+
+                // Dates (US format)
+                startDate: '@date("MM/dd/yyyy")',
+                endDate: '@date("MM/dd/yyyy")',
+
+                // Discount
+                discount: 0.0,
+
+                // Total Amount
+                totalDue: '@float(1000, 50000, 2, 2)',
+
+                // Payment Method (US standard)
+                'method|1': [
+                    "Credit Card",
+                    "ACH",
+                    "Wire Transfer",
+                    "Check"
+                ]
+            }],
+            total: 54
+        })
+    }
+});
+
+Mock.mock('https://www.demo.com/equipmentList', 'post', (options: any) => {
+    const { page = 1, pageSize = 10 } = JSON.parse(options.body || "{}");
+
+    console.log("Equipment API received params:", JSON.parse(options.body));
+
+    return {
+        code: 200,
+        message: "Success",
+        data: Mock.mock({
+            [`list|${pageSize}`]: [{
+                "id|+1": 1001,
+
+                // Equipment Name（美式）
+                equipmentName: function () {
+                    return Mock.Random.pick([
+                        "Water Supply System",
+                        "HVAC Unit",
+                        "Security Gate System",
+                        "Surveillance Camera",
+                        "Central Air Conditioning",
+                        "EV Charging Station",
+                        "Elevator System",
+                        "Lighting Equipment"
+                    ])
+                },
+
+                // Equipment ID
+                no: function () {
+                    return `EQ-${Mock.Random.string('upper', 2)}-${Mock.Random.integer(1000, 9999)}`
+                },
+
+                // Assigned Person
+                "manager": '@name',
+
+                // Phone（正确写法）
+                tel: function () {
+                    return `(617) 555-${Mock.Random.integer(1000, 9999)}`
+                },
+
+                // Expected Lifespan（years）
+                time: function () {
+                    return `${Mock.Random.pick([10, 15, 20, 25])} years`
+                },
+
+                // Remaining Lifespan
+                rest: function () {
+                    return `${Mock.Random.integer(1, 10)} years`
+                },
+
+                // Status
+                "status|1": [1, 2, 3], // 1 Active, 2 Maintenance, 3 Out of Service
+
+                // Last Maintenance Date（美式）
+                last: '@date("MM/dd/yyyy")',
+
+                // Model
+                type: function () {
+                    return `Model-${Mock.Random.integer(100, 999)}`
+                },
+
+                // Manufacturer（美式公司名）
+                from: function () {
+                    return Mock.Random.pick([
+                        "General Electric",
+                        "Honeywell",
+                        "Siemens",
+                        "Johnson Controls",
+                        "Schneider Electric"
+                    ])
+                }
+            }],
+            total: 66
+        })
+    }
+});
+
+Mock.mock('https://www.demo.com/accountList', 'post', (options: any) => {
+    return {
+        code: 200,
+        message: "Success",
+        data: {
+            list: [
+
+                {
+                    id: 1001,
+                    accountName: "admin01",
+                    fullName: "John Doe",
+                    phone: "(617) 555-1298",
+                    department: "Engineering",
+                    auth: "admin",
+                    menu: adminMenuList
+                },
+                {
+                    id: 1002,
+                    accountName: "user01",
+                    fullName: "Maria Rodriguez",
+                    phone: "(508) 555-7743",
+                    department: "Marketing",
+                    auth: "user",
+                    menu: userMenuList
+                },
+                {
+                    id: 1003,
+                    accountName: "manager01",
+                    fullName: "Thomas Nguyen",
+                    phone: "(781) 555-3321",
+                    department: "Finance",
+                    auth: "manager",
+                    menu: managerMenuList
+                },
+                {
+                    id: 1004,
+                    accountName: "user02",
+                    fullName: "Ashley Smith",
+                    phone: "(857) 555-9087",
+                    department: "Human Resources",
+                    auth: "customize",
+                    menu: customizeMenuList
+                },
+                {
+                    id: 1005,
+                    accountName: "manager02",
+                    fullName: "David Johnson",
+                    phone: "(978) 555-6654",
+                    department: "Operations",
+                    auth: "manager",
+                    menu: managerMenuList
+                }
+
+            ],
+            total: 5
+        }
+    }
+})
+
+const statusMap = [
+  { type: "Pending", progress: () => 1 },
+  { type: "Processing", progress: () => Mock.Random.integer(2, 99) },
+  { type: "Completed", progress: () => 100 }
+];
+
+interface TaskType{
+    id:number;
+    role:string;
+    description:string;
+    creator:string;
+    date:string;
+    type:string;
+    progress:number;
+}
+
+const generateByStatus = (type:string, getProgress:()=>{}, count:number) => {
+  return Mock.mock({
+    [`list|${count}`]: [
+      {
+        id: "@integer(1000, 9999)",
+        role: "@pick(['admin','manager','user'])",
+        description: "Create @pick(['admin','manager','user']) permission account",
+        creator: "@pick(['IT','HR','Finance','Marketing','Operations']) - @name",
+        date: "@date('yyyy-MM-dd')",
+        type: type,
+        progress: "@integer(1,100)" 
+      }
+    ]
+  }).list.map((item:TaskType) => ({
+    ...item,
+    progress: getProgress() 
+  }));
+};
+
+// 3 + 3 + 3
+let list = [
+  ...generateByStatus("Pending", () => 1, 3),
+  ...generateByStatus("Processing", () => Mock.Random.integer(2, 99), 3),
+  ...generateByStatus("Completed", () => 100, 3)
+];
+
+for (let i = list.length - 1; i > 0; i--) {
+  const j = Math.floor(Math.random() * (i + 1));
+  [list[i], list[j]] = [list[j], list[i]];
+}
+
+
+Mock.mock('https://www.demo.com/profileTask','post',(options:any)=>{
+    return{
+        code:200,
+        message:"Success",
+        data:{
+            list
         }
     }
 })

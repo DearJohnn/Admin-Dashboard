@@ -16,7 +16,10 @@ li{list-style: none;}
     display: flex;
     gap:10px;
 }
-
+.maintenance-button{
+    width:90px;
+    text-align: center;
+}
 .search{
     .ant-col{
         display: flex;
